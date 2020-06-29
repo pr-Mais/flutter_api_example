@@ -35,7 +35,6 @@ class _QuotesPageState extends State<QuotesPage> {
       List _quotes = await apiService.getEndpointData(endpoint: endpoint);
 
       setState(() {
-
         connection = true;
 
         if (_quotes.length == 1) {
@@ -43,21 +42,19 @@ class _QuotesPageState extends State<QuotesPage> {
         } else {
           quotes = _quotes;
         }
-
       });
-    } on Response catch (_) {
+    } catch (error) {
       setState(() {
         connection = false;
       });
-    } on SocketException catch (_) {
-      rethrow;
-    } catch (error) {
-      _showSnackBar(context, "There was an error.");
     }
   }
 
   _showRandomQuote(BuildContext context) async {
-    try {
+    if (!connection) {
+      _setLoading(false);
+      _showSnackBar(context, "Server error, check your connection.");
+    } else {
       _setLoading(true);
       await _getData(Endpoint.random);
       _setLoading(false);
@@ -97,9 +94,6 @@ class _QuotesPageState extends State<QuotesPage> {
       if (result == true) {
         _showSnackBar(context, "Copied to clipboard!");
       }
-    } catch (error) {
-      _setLoading(false);
-      _showSnackBar(context, "Server error, check your connection.");
     }
   }
 

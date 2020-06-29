@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_api_example/backend/api_service.dart';
 import 'package:flutter_api_example/components/quote_card.dart';
-import 'package:http/http.dart';
 
 import '../backend/api.dart';
 import '../model/quote.dart';
@@ -52,7 +49,6 @@ class _QuotesPageState extends State<QuotesPage> {
 
   _showRandomQuote(BuildContext context) async {
     if (!connection) {
-      _setLoading(false);
       _showSnackBar(context, "Server error, check your connection.");
     } else {
       _setLoading(true);
@@ -152,14 +148,13 @@ class _QuotesPageState extends State<QuotesPage> {
     return Expanded(
       child: ListView(
         children: [
-          if (connection && quotes.isEmpty)
+          if (quotes.isEmpty && connection)
             Center(child: CircularProgressIndicator()),
-          if (quotes != null && connection)
-            for (Quote quote in quotes)
-              QuoteCard(
-                quote: quote,
-                context: context,
-              ),
+          for (Quote quote in quotes)
+            QuoteCard(
+              quote: quote,
+              context: context,
+            ),
         ],
       ),
     );

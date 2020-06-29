@@ -80,6 +80,7 @@ class _QuotesPageState extends State<QuotesPage> {
             actions: [
               FlatButton(
                   onPressed: () {
+                    copyQuote(randomQuote, context);
                     Navigator.of(context).pop(true);
                   },
                   child: Text("Copy"))

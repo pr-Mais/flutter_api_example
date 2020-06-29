@@ -3,6 +3,22 @@ import 'package:flutter/services.dart';
 
 import '../model/quote.dart';
 
+void copyQuote(Quote quote, BuildContext context) {
+  final _quote = "\"${quote.content}\", ${quote.author}";
+  Clipboard.setData(new ClipboardData(text: _quote));
+
+  Scaffold.of(context)
+    ..removeCurrentSnackBar()
+    ..showSnackBar(
+      SnackBar(
+        content: Text(
+          "Copied to clipboard!",
+        ),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+}
+
 class QuoteCard extends StatelessWidget {
   const QuoteCard({
     Key key,
@@ -11,22 +27,6 @@ class QuoteCard extends StatelessWidget {
   }) : super(key: key);
   final Quote quote;
   final BuildContext context;
-
-  void _copyQuote() {
-    final _quote = "\"${quote.content}\", ${quote.author}";
-    Clipboard.setData(new ClipboardData(text: _quote));
-
-    Scaffold.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(
-            "Copied to clipboard!",
-          ),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class QuoteCard extends StatelessWidget {
                     size: 20,
                     color: Theme.of(context).primaryColor,
                   ),
-                  onPressed: _copyQuote),
+                  onPressed: () => copyQuote(quote, context)),
             ],
           ),
         ],

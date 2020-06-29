@@ -17,6 +17,7 @@ class APIService {
     if (response != null) {
 
       final parsedJson = json.decode(response.body);
+      
       if (endpoint == Endpoint.all) {
         final map =
             List<Quote>.from(parsedJson.map((json) => Quote.fromJson(json)));

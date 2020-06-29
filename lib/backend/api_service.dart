@@ -11,9 +11,12 @@ class APIService {
 
   Future<List<Quote>> getEndpointData({@required Endpoint endpoint}) async {
     Uri uri = api.endpointUri(endpoint);
+
     final response = await http.get(uri.toString());
-    final parsedJson = json.decode(response.body);
+    
     if (response != null) {
+
+      final parsedJson = json.decode(response.body);
       if (endpoint == Endpoint.all) {
         final map =
             List<Quote>.from(parsedJson.map((json) => Quote.fromJson(json)));
